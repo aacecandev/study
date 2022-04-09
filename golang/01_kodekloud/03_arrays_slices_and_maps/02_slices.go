@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	// continous segment of an underlying array
+	// continuous segment of an underlying array
 
 	// variable typed (elements can be added or removed)
 
