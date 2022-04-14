@@ -1,0 +1,69 @@
+Interfaces allow you to express the behavior of a type. If a value of a type implements an interface, it means the value has a specific set of behaviors. You don’t even need to declare that you’re implementing an interface; you just need to write the implementation. Other languages call this duck typing—if it quacks like a duck, then it can be a duck
+
+The compiler will always look for the packages you import at the locations referenced by the GOROOT and GOPATH environment variables. 
+GOROOT="/Users/me/go"
+GOPATH="/Users/me/spaces/go/projects"
+
+A map is a reference type that you’re required to make in Go. If you don’t make the map first and assign it to your variable, you’ll receive errors when you try to use the map variable. This is because the zero value for a map variable is nil
+make(map[string]Matcher)
+
+In Go, all variables are initialized to their zero value. For numeric types, that value is 0; for strings it’s an empty string; for Booleans it’s false; and for pointers, the zero value is nil
+
+A good rule of thumb when declaring variables is to use the keyword var when declaring variables that will be initialized to their zero value, and to use the short variable declaration operator when you’re providing extra initialization or making a function call.
+
+The keyword range can be used with arrays, strings, slices, maps, and channels.
+ 
+When we use for range to iterate over a slice, we get two values back on each iteration. The first is the index position of the element we’re iterating over, and the second is a copy of the value in that element.
+
+When looking up a key in a map, you have two options: you can assign a single variable or two variables for the lookup call. The first variable is always the value returned for the key lookup, and the second value, if specified, is a Boolean flag that reports whether the key exists or not.
+
+In Go, all variables are passed by value. Since the value of a pointer variable is the address to the memory being pointed to, passing pointer variables between functions is still considered a pass by value.
+
+Since the Go compiler can deduce the type from the value on the right side of the assignment operator, specifying the type when declaring the constant is unnecessary. We also use a lowercase letter for the name of the constant, which means this constant is unexported and can only be directly accessed by code within the search package. 
+
+he keyword defer is used to schedule a function call to be executed right after a function returns. It’s our responsibility to close the file once we’re done with it. By using the keyword defer to schedule the call to the close method, we can guarantee that the method will be called. This will happen even if the function panics and terminates unexpectedly. The keyword defer lets us write this statement close to where the opening of the file occurs, which helps with readability and reducing bugs.
+
+You follow a naming convention in Go when naming interfaces. If the interface type contains only one method, the name of the interface ends with the er suffix. This is the exact case for our interface, so the name of the interface is Matcher. When multiple methods are declared within an interface type, the name of the interface should relate to its general behavior.
+
+// Method declared with a value receiver of type defaultMatcher
+func (m defaultMatcher) Search(feed *Feed, searchTerm string)
+
+// Declare a pointer of type defaultMatch
+dm := new(defaultMatch)
+
+// The compiler will dereference the dm pointer to make the call
+dm.Search(feed, "test")
+
+// Method declared with a pointer receiver of type defaultMatcher
+func (m *defaultMatcher) Search(feed *Feed, searchTerm string)
+
+// Declare a value of type defaultMatch
+var dm defaultMatch
+
+// The compiler will reference the dm value to make the call
+dm.Search(feed, "test")
+
+Unlike when you call methods directly from values and pointers, when you call a method via an interface type value, the rules are different. Methods declared with pointer receivers can only be called by interface type values that contain pointers. Methods declared with value receivers can be called by interface type values that contain both values and pointers.
+
+// Method declared with a pointer receiver of type defaultMatcher
+func (m *defaultMatcher) Search(feed *Feed, searchTerm string)
+
+// Call the method via an interface type value
+var dm defaultMatcher
+var matcher Matcher = dm     // Assign value to interface type
+matcher.Search(feed, "test") // Call interface method with value
+
+> go build
+cannot use dm (type defaultMatcher) as type Matcher in assignment
+
+// Method declared with a value receiver of type defaultMatcher
+func (m defaultMatcher) Search(feed *Feed, searchTerm string)
+
+// Call the method via an interface type value
+var dm defaultMatcher
+var matcher Matcher = &dm    // Assign pointer to interface type
+matcher.Search(feed, "test") // Call interface method with pointer
+
+> go build
+Build Successful
+
