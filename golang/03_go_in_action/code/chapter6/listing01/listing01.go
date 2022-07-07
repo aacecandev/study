@@ -11,6 +11,7 @@ import (
 // main is the entry point for all Go programs.
 func main() {
 	// Allocate 1 logical processor for the scheduler to use.
+	// This can be used also as env variable.
 	runtime.GOMAXPROCS(1)
 
 	// wg is used to wait for the program to finish.
@@ -25,7 +26,7 @@ func main() {
 		// Schedule the call to Done to tell main we are done.
 		defer wg.Done()
 
-		// Display the alphabet three times
+		// Display the alphabet three times using lowercase
 		for count := 0; count < 3; count++ {
 			for char := 'a'; char < 'a'+26; char++ {
 				fmt.Printf("%c ", char)
@@ -38,7 +39,7 @@ func main() {
 		// Schedule the call to Done to tell main we are done.
 		defer wg.Done()
 
-		// Display the alphabet three times
+		// Display the alphabet three times using uppercase
 		for count := 0; count < 3; count++ {
 			for char := 'A'; char < 'A'+26; char++ {
 				fmt.Printf("%c ", char)

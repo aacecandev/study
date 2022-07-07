@@ -21,6 +21,7 @@ func (u *user) notify() {
 }
 
 // admin represents an admin user with privileges.
+// the embedding of the user type as an inner type of admin. To embed a type, all that needs to happen is for the type name to be declared. One line 26, we have the declaration of a field named level. Notice the difference between declaring a field and embedding a type
 type admin struct {
 	user  // Embedded Type
 	level string

@@ -67,3 +67,31 @@ matcher.Search(feed, "test") // Call interface method with pointer
 > go build
 Build Successful
 
+### CHAPTER 3 ###
+
+Don’t forget that you can get more details on a package by visiting http://golang.org/pkg/fmt/ or running godoc fmt from your terminal.
+
+Packages in the standard library are found under where Go is installed on your computer. Packages that are created by you or other Go developers live inside the GOPATH.
+
+If Go was installed under /usr/local/go and your GOPATH was set to /home/myproject:/home/mylibraries, the compiler would look for the net/http package in the following order:
+
+/usr/local/go/src/pkg/net/http
+/home/myproject/src/net/http
+/home/mylibraries/src/net/http
+
+As an example, let’s say you were already using the fmt package that comes as part of the standard library. Now you need to import a package named fmt that you had created as part of your own project.
+
+01 package main
+02
+03 import (
+04     "fmt"
+05     myfmt "mylib/fmt"
+06 )
+07
+08 func main() {
+09     fmt.Println("Standard Library")
+10     myfmt.Println("mylib/fmt")
+11 }
+
+
+

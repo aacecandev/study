@@ -1,0 +1,296 @@
+# Concurrency
+
+Concurrency in Go is the ability for functions to run independent of each other. When a function is created as a goroutine, it’s treated as an independent unit of work that gets scheduled and then executed on an available logical processor. The Go runtime scheduler is a sophisticated piece of software that manages all the goroutines that are created and need processor time. The scheduler sits on top of the operating system, binding operating system’s threads to logical processors which, in turn, execute goroutines. The scheduler controls everything related to which goroutines are running on which logical processors at any given time.
+
+Concurrency synchronization comes from a paradigm called communicating sequential processes or CSP. CSP is a message-passing model that works by communicating data between goroutines instead of locking data to synchronize access. The key data type for synchronizing and passing messages between goroutines is called a channel.
+
+## Concurrency versus parallelism 
+
+what operating system processes and threads are
+
+When you run an application, such as an IDE or editor, the operating system starts a process for the application. You can think of a process like a container that holds all the resources an application uses and maintains as it runs. 
+
+These resources include but are not limited to a memory address space, handles to files, devices, and threads.
+
+A thread is a path of execution that’s scheduled by the operating system to run the code that you write in your functions. Each process contains at least one thread, and the initial thread for each process is called the main thread. When the main thread terminates, the application terminates, because this path of the execution is the origin for the application. The operating system schedules threads to run against processors regardless of the process they belong to. The algorithms that different operating systems use to schedule threads are always changing and abstracted from the programmer
+
+The operating system schedules threads to run against physical processors and the Go runtime schedules goroutines to run against logical processors. Each logical processor is individually bound to a single operating system thread.
+
+As of version 1.5, the default is to allocate a logical processor for every physical processor that’s available. Prior to version 1.5, the default was to allocate only a single logical processor. These logical processors are used to execute all the goroutines that are created. Even with a single logical processor, hundreds of thousands of goroutines can be scheduled to run concurrently
+
+As goroutines are created and ready to run, they’re placed in the scheduler’s global run queue. Soon after, they’re assigned to a logical processor and placed into a local run queue for that logical processor. From there, a goroutine waits its turn to be given the logical processor for execution.
+Sometimes a running goroutine may need to perform a blocking syscall, such as opening a file. When this happens, the thread and goroutine are detached from the logical processor and the thread continues to block waiting for the syscall to return. In the meantime, there’s a logical processor without a thread. So the scheduler creates a new thread and attaches it to the logical processor. Then the scheduler will choose another goroutine from the local run queue for execution. Once the syscall returns, the goroutine is placed back into a local run queue, and the thread is put aside for future use. 
+
+If a goroutine needs to make a network I/O call, the process is a bit different. In this case, the goroutine is detached from the logical processor and moved to the runtime integrated network poller. Once the poller indicates a read or write operation is ready, the goroutine is assigned back to a logical processor to handle the operation
+
+the runtime limits each program to a maximum of 10,000 threads by default. This value can be changed by calling the SetMaxThreads function from the runtime/debug package. If any program attempts to use more threads, the program crashes. 
+
+Concurrency is not parallelism. Parallelism can only be achieved when multiple pieces of code are executing simultaneously against different physical processors. Parallelism is about doing a lot of things at once. Concurrency is about managing a lot of things at once
+
+If you want to run goroutines in parallel, you must use more than one logical processor. When there are multiple logical processors, the scheduler will evenly distribute goroutines between the logical processors. This will result in goroutines running on different threads. But to have true parallelism, you still need to run your program on a machine with multiple physical processors.
+
+## Goroutines
+
+##### listing01
+
+Here’s a program that creates two goroutines that display the English alphabet with lower and uppercase letters in a concurrent fashion.
+
+functions are created as goroutines by using the keyword go
+
+The two goroutines we created ran concurrently, one after the other, performing their individual task of displaying the alphabet. 
+
+Once the two anonymous functions are created as goroutines, the code in main keeps running. This means that the main function can return before the goroutines complete their work.
+the main function therefore waits for both goroutines to complete their work by using a WaitGroup. 
+
+A WaitGroup is a counting semaphore that can be used to maintain a record of running goroutines. When the value of a WaitGroup is greater than zero, the Wait method will block.
+
+
+To decrement the value of the WaitGroup and eventually release the main function, calls to the Done method on lines 26 and 39 are made within the scope of a defer statement. defer is used to schedule other functions from inside the executing function to be called when the function returns.
+
+##### listing04
+
+Based on the internal algorithms of the scheduler, a running goroutine can be stopped and rescheduled to run again before it finishes its work. The scheduler does this to prevent any single goroutine from holding the logical processor hostage. It will stop the currently running goroutine and give another runnable goroutine a chance to run.
+
+Output for listing04.go 
+
+Create Goroutines
+Waiting To Finish
+B:2
+B:3
+...
+B:4583
+B:4591
+A:3             ** Goroutines Swapped
+A:5
+...
+
+A:4561
+A:4567
+B:4603          ** Goroutines Swapped
+B:4621
+...
+Completed B
+A:4457          ** Goroutines Swapped
+A:4463
+...
+A:4993
+A:4999
+Completed A
+Terminating Program
+
+Goroutine B begins to display prime numbers first. Once goroutine B prints prime number 4591, the scheduler swaps out the goroutine for goroutine A. Goroutine A is then given some time on the thread and swapped out for the B goroutine once again. The B goroutine is allowed to finish all its work. Once goroutine B returns, you see that goroutine A is given back the thread to finish its work. Every time you run this program, the scheduler will slightly change the point where the time slice occurs.
+
+
+
+import "runtime"
+
+// Allocate a logical processor for every available core.
+runtime.GOMAXPROCS(runtime.NumCPU())
+
+The NumCPU function returns the number of physical processors that are available; therefore, the function call to GOMAXPROCS creates a logical processor for each available physical processor. It’s important to note that using more than one logical processor doesn’t necessarily mean better performance. Benchmarking is required to understand how your program performs when changing any runtime configuration parameters. 
+
+##### listing07
+
+If we give the scheduler more than one logical processor to use, we’ll see different behavior in the output of our example programs.
+
+This code will allow the goroutines to be run in parallel. 
+
+Output for listing07.go 
+
+Create Goroutines
+Waiting To Finish
+A B C a D E b F c G d H e I f J g K h L i M j N k O l P m Q n R o S p T
+q U r V s W t X u Y v Z w A x B y C z D a E b F c G d H e I f J g K h L
+i M j N k O l P m Q n R o S p T q U r V s W t X u Y v Z w A x B y C z D
+a E b F c G d H e I f J g K h L i M j N k O l P m Q n R o S p T q U r V
+s W t X u Y v Z w x y z
+Terminating Program
+
+The output is based on running the program on an eight-core machine, so each goroutine is running on its own core. Remember that goroutines can only run in parallel if there’s more than one logical processor and there’s a physical processor available to run each goroutine simultaneously. 
+
+## Race conditions 
+
+When two or more goroutines have unsynchronized access to a shared resource and attempt to read and write to that resource at the same time, you have what’s called a race condition. Read and write operations against a shared resource must always be atomic, or in other words, done by only one goroutine at a time. 
+
+##### listing09
+
+Here’s an example program that contains a race condition.
+
+he counter variable is read and written to four times, twice by each goroutine, but the value of the counter variable when the program terminates is 2. Figure 6.5 provides a clue as to why this is happening. 
+
+Each goroutine overwrites the work of the other. This happens when the goroutine swap is taking place. Each goroutine makes its own copy of the counter variable and then is swapped out for the other goroutine. When the goroutine is given time to execute again, the value of the counter variable has changed, but the goroutine doesn’t update its copy. Instead it continues to increment the copy it has and set the value back to the counter variable, replacing the work the other goroutine performed. 
+
+Go has a special tool that can detect race conditions in your code. It’s extremely useful to find these types of bugs, especially when they’re not as obvious as our example. Let’s run the race detector against our example code. 
+
+go build -race   // Build the code using the race detector flag
+./example        // Run the code
+
+==================
+WARNING: DATA RACE
+Write by goroutine 5:
+
+  main.incCounter()
+      /example/main.go:49 +0x96
+
+Previous read by goroutine 6:
+  main.incCounter()
+      /example/main.go:40 +0x66
+
+Goroutine 5 (running) created at:
+  main.main()
+      /example/main.go:25 +0x5c
+
+Goroutine 6 (running) created at:
+  main.main()
+      /example/main.go:26 +0x73
+==================
+Final Counter: 2
+Found 1 data race(s)
+
+## Locking shared resources 
+
+One way we can fix our example and eliminate the race condition is by using the support Go has for synchronizing goroutines by locking down shared resources. 
+
+### Atomic functions 
+
+Atomic functions provide low-level locking mechanisms for synchronizing access to integers and pointers
+
+##### listing13
+
+On line 43 the program is now using the AddInt64 function from the atomic package. This function synchronizes the adding of integer values by enforcing that only one goroutine can perform and complete this add operation at a time. When goroutines attempt to call any atomic function, they’re automatically synchronized against the variable that’s referenced. Now we get the correct value of 4.
+
+##### listing15
+
+LoadInt64 and StoreInt64. These functions provide a safe way to read and write to an integer value. Here’s an example using LoadInt64 and StoreInt64 to create a synchronous flag that can alert multiple goroutines of a special condition in a program
+
+two goroutines are launched and begin to perform some work. After every iteration of their respective loop, the goroutines check the value of the shutdown variable by using the LoadInt64 function
+The main function uses the StoreInt64 function on line 35 to safely change the value of the shutdown variable. If any of the doWork goroutines attempt to call the LoadInt64 function at the same time as the main function calls StoreInt64, the atomic functions will synchronize the calls and keep all the operations safe and race condition–free.
+
+### Mutexes
+
+A mutex is named after the concept of mutual exclusion. A mutex is used to create a critical section around code that ensures only one goroutine at a time can execute that code section. We can also use a mutex to fix the race condition
+
+##### listing16
+
+The operations against the counter variable are now protected within a critical section defined by the calls to Lock() and Unlock() on lines 46 and 60. The use of the curly brackets is just to make the critical section easier to see; they’re not necessary. Only one goroutine can enter the critical section at a time. Not until the call to the Unlock() function is made can another goroutine enter the critical section. When the thread is yielded on line 52, the scheduler assigns the same goroutine to continue running
+
+## Channels
+
+When a resource needs to be shared between goroutines, channels act as a conduit between the goroutines and provide a mechanism that guarantees a synchronous exchange. When declaring a channel, the type of data that will be shared needs to be specified. Values and pointers of built-in, named, struct, and reference types can be shared through a channel.
+
+Creating a channel in Go requires the use of the built-in function make.
+
+```go
+// Unbuffered channel of integers.
+unbuffered := make(chan int)
+
+// Buffered channel of strings.
+buffered := make(chan string, 10)
+```
+
+The first argument to make requires the keyword chan and then the type of data the channel will allow to be exchanged. If you’re creating a buffered channel, then you specify the size of the channel’s buffer as the second argument.
+
+Sending a value or pointer into a channel requires the use of the <- operator. 
+
+// Buffered channel of strings.
+buffered := make(chan string, 10)
+
+// Send a string through the channel.
+buffered <- "Gopher"
+
+For another goroutine to receive that string from the channel, we use the same <- operator, but this time as a unary operator. 
+
+// Receive a string from the channel.
+value := <-buffered
+
+### Unbuffered channels
+
+no capacity to hold any value before it’s received. These types of channels require both a sending and receiving goroutine to be ready at the same instant before any send or receive operation can complete. If the two goroutines aren’t ready at the same instant, the channel makes the goroutine that performs its respective send or receive operation first wait.
+
+##### listing20
+
+In the game of tennis, two players hit a ball back and forth to each other. The players are always in one of two states: either waiting to receive the ball, or sending the ball back to the opposing player. You can simulate a game of tennis using two goroutines and an unbuffered channel to simulate the exchange of the ball. 
+
+an unbuffered channel of type int is created to synchronize the exchange of the ball being hit by both goroutines.
+he two goroutines that will be playing the game are created
+At this point both goroutines are locked waiting to receive the ball
+On line 32 a ball is sent into the channel, and the game is played until one of the goroutines lose
+Inside the player function, you find an endless for loop on line 43
+
+On line 45 the goroutine performs a receive on the channel, waiting to receive the ball. This locks the goroutine until a send is performed on the channel. Once the receive on the channel returns, the ok flag is checked on line 46 for false. A value of false indicates the channel was closed and the game is over
+
+On lines 53 through 60 a random number is generated to determine if the goroutine hits or misses the ball. If the ball is hit, then on line 64 the value of the ball is incremented by one and the ball is sent back to the other player on line 67.
+
+Eventually a goroutine misses the ball and the channel is closed on line 58. Then both goroutines return, the call to Done via the defer statement is performed, and the program terminates. 
+
+Output for listing20.go 
+
+Player Nadal Hit 1
+Player Djokovic Hit 2
+Player Nadal Hit 3
+Player Djokovic Missed
+Player Nadal Won
+
+##### listing22
+
+Another example that uses a different pattern to synchronize goroutines with an unbuffered channel is simulating a relay race. In a relay race, four runners take turns running around the track. The second, third, and fourth runners can’t start running until they receive the baton from the previous runner
+For this synchronization to take place, both runners who are involved in the exchange need to be ready at exactly the same time. 
+
+Output for listing22.go 
+
+Runner 1 Running With Baton
+Runner 1 Exchange With Runner 2
+Runner 2 Running With Baton
+Runner 2 Exchange With Runner 3
+Runner 3 Running With Baton
+Runner 3 Exchange With Runner 4
+Runner 4 Running With Baton
+Runner 4 Finished, Race Over
+
+Inside the Runner goroutine, you can see how the baton is exchanged from runner to runner. On line 37 the goroutine waits to receive the baton with the receive call on the channel. Once the baton is received, the next runner takes his mark on line 46 unless the goroutine represents the fourth runner. On line 50 the runner runs around the track for 100 milliseconds. On line 55 if the fourth runner just finished running, the WaitGroup is decremented by the call to Done and the goroutine returns. If this isn’t the fourth runner, then on line 64 the baton is passed to the next runner who is already waiting. At this point both goroutines are locked until the exchange is made.
+
+### Buffered channels
+
+A buffered channel is a channel with capacity to hold one or more values before they’re received. These types of channels don’t force goroutines to be ready at the same instant to perform sends and receives.
+
+A receive will block only if there’s no value in the channel to receive. A send will block only if there’s no available buffer to place the value being sent.
+
+An unbuffered channel provides a guarantee that an exchange between two goroutines is performed at the instant the send and receive take place. A buffered channel has no such guarantee. 
+
+##### listing24
+
+Output for listing24.go 
+
+Worker: 1 : Started Task : 1
+Worker: 2 : Started Task : 2
+Worker: 3 : Started Task : 3
+Worker: 4 : Started Task : 4
+Worker: 1 : Completed Task : 1
+Worker: 1 : Started Task : 5
+Worker: 4 : Completed Task : 4
+Worker: 4 : Started Task : 6
+Worker: 1 : Completed Task : 5
+
+Worker: 1 : Started Task : 7
+Worker: 2 : Completed Task : 2
+Worker: 2 : Started Task : 8
+Worker: 3 : Completed Task : 3
+Worker: 3 : Started Task : 9
+Worker: 1 : Completed Task : 7
+Worker: 1 : Started Task : 10
+Worker: 4 : Completed Task : 6
+Worker: 4 : Shutting Down
+Worker: 3 : Completed Task : 9
+Worker: 3 : Shutting Down
+Worker: 2 : Completed Task : 8
+Worker: 2 : Shutting Down
+Worker: 1 : Completed Task : 10
+Worker: 1 : Shutting Down
+
+In the main function on line 31, a buffered channel of type string is created with a capacity of 10. On line 34 the WaitGroup is given the count of 4, one for each goroutine that’s going to be created. Then on lines 35 through 37, four goroutines are created and passed the channel they will be receiving the work on. On lines 40 through 42, 10 strings are sent into the channel to simulate work for the goroutines. Once the last string is sent into the channel, the channel is closed on line 46 and the main function waits for all the work to be completed on line 49. 
+
+Closing the channel on line 46 is an important piece of code. When a channel is closed, goroutines can still perform receives on the channel but can no longer send on the channel. Being able to receive on a closed channel is important because it allows the channel to be emptied of all its values with future receives, so nothing in the channel is ever lost. A receive on a closed and empty channel always returns immediately and provides the zero value for the type the channel is declared with. If you also request the optional flag on the channel receive, you can get information about the state of the channel. 
+
+Within the loop, all of the received work is processed. Each goroutine blocks on line 60 waiting to receive work from the channel. Once the receive returns, the ok flag is checked to see if the channel is both empty and closed. If the value of ok is false, the goroutine terminates, which causes the defer statement on line 56 to call Done and report back to main.
+
+If the ok flag is true, then the value received is valid. Lines 71 and 72 simulate work being processed. Once the work is done, the goroutine blocks again in the receive of the channel on line 60. Once the channel is closed, the receive on the channel returns immediately and the goroutine terminates itself.

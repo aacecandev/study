@@ -50,6 +50,8 @@ func main() {
 
 // sendNotification accepts values that implement the notifier
 // interface and sends notifications.
+
+// it's a polymorphic function, it can accept a value of any type that implements the notifier interface
 func sendNotification(n notifier) {
 	n.notify()
 }

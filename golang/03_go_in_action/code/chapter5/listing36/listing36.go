@@ -35,6 +35,10 @@ func main() {
 	//                     notifier in argument to sendNotification:
 	//   user does not implement notifier
 	//                          (notify method has pointer receiver)
+
+	// We implemented the interface using a pointer receiver and attempted to pass a value of type user to the sendNotification function
+	// if we pass the address of the user value instead, you’ll see that it now compiles and works
+	// sendNotification(&u)
 }
 
 // sendNotification accepts values that implement the notifier

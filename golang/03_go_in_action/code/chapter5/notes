@@ -1,0 +1,321 @@
+01 // user defines a user in the program.
+02 type user struct {
+03    name       string
+04    email      string
+05    ext        int
+06    privileged bool
+07 }
+
+09 // Declare a variable of type user.
+10 var bill user
+
+Any time a variable is created and initialized to its zero value, it’s idiomatic to use the keyword var. Reserve the use of the keyword var as a way to indicate that a variable is being set to its zero value. If the variable will be initialized to something other than its zero value, then use the short variable declaration operator with a struct literal.
+
+12 // Declare a variable of type user and initialize all the fields.
+13 lisa := user{
+14     name:       "Lisa",
+15     email:      "lisa@email.com",
+16     ext:        123,
+17     privileged: true,
+18 }
+
+The struct literal can take on two forms for a struct type. Listing 5.4 shows the first form, which is to declare each field and value from the struct to be initialized on a separate line. A colon is used to separate the two, and it requires a trailing comma. The order of the fields doesn’t matter. The second form is without the field names and just declares the values. The order of the values does matter in this case and needs to match the order of the fields in the struct declaration
+
+12 // Declare a variable of type user.
+13 lisa := user{"Lisa", "lisa@email.com", 123, true}
+
+You can also declare fields using other user-defined types. 
+
+20 // admin represents an admin user with privileges.
+21 type admin struct {
+22     person user
+23     level  string
+24 }
+
+26 // Declare a variable of type admin.
+27 fred := admin{
+28     person: user{
+29         name:       "Lisa",
+30         email:      "lisa@email.com",
+31         ext:        123,
+32         privileged: true,
+33     },
+34     level: "super",
+35 }
+
+A second way to declare a user-defined type is by taking an existing type and using it as the type specification for the new type.
+
+type Duration int64
+
+Even though int64 is acting at the base type, it doesn’t mean Go considered them to be the same. Duration and int64 are two distinct and different types. 
+
+01 package main
+02
+03 type Duration int64
+04
+05 func main() {
+06     var dur Duration
+07     dur = int64(1000)
+08 }
+
+prog.go:7: cannot use int64(1000) (type int64) as type Duration
+           in assignment
+
+
+The nature of types 
+
+After declaring a new type, try to answer this question before declaring methods for the type. Does adding or removing something from a value of this type need to create a new value or mutate the existing one? If the answer is create a new value, then use value receivers for your methods. If the answer is mutate the value, then use pointer receivers.
+
+The idea is to not focus on what the method is doing with the value, but to focus on what the nature of the value is. 
+
+Built-in types
+
+These types have a primitive nature to them. Because of this, when adding or removing something from a value of one of these types, a new value should be created. Based on this, when passing values of these types to functions and methods, a copy of the value should be passed
+
+620 func Trim(s string, cutset string) string {
+621     if s == "" || cutset == "" {
+622         return s
+623     }
+624     return TrimFunc(s, makeCutsetFunc(cutset))
+625 }
+
+Trim function, which comes from the strings package in the standard library. The Trim function is passed a string value to operate on and a string value with characters to find. It then returns a new string value that’s the result of the operation. The function operates on copies of the caller’s original string values and returns a copy of the new string value
+
+38 func isShellSpecialVar(c uint8) bool {
+39     switch c {
+40     case '*', '#', '$', '@', '!', '?', '0', '1', '2', '3', '4', '5',
+																										 '6', '7', '8', '9':
+41         return true
+42     }
+43     return false
+44 }
+
+isShellSpecialVar function from the env package. This function is passed a value of type uint8 and returns a value of type bool. Note how pointers aren’t being used to share the value for the parameter or return value. The caller passes a copy of their uint8 value and receives a value of true or false
+
+Reference types 
+
+Reference types in Go are the set of slice, map, channel, interface, and function types. When you declare a variable from one of these types, the value that’s created is called a header value. Technically, a string is also a reference type value. All the different header values from the different reference types contain a pointer to an underlying data structure. Each reference type also contains a set of unique fields that are used to manage the underlying data structure. You never share reference type values because the header value is designed to be copied. The header value contains a pointer; therefore, you can pass a copy of any reference type value and share the underlying data structure intrinsically
+
+32 type IP []byte
+
+329 func (ip IP) MarshalText() ([]byte, error) {
+330     if len(ip) == 0 {
+331         return []byte(""), nil
+332     }
+333     if len(ip) != IPv4len && len(ip) != IPv6len {
+334         return nil, errors.New("invalid IP address")
+335     }
+336     return []byte(ip.String()), nil
+337 }
+
+318 // ipEmptyString is like ip.String except that it returns
+319 // an empty string when ip is unset.
+320 func ipEmptyString(ip IP) string {
+321     if len(ip) == 0 {
+322         return ""
+323     }
+324     return ip.String()
+325 }
+
+Struct types 
+
+39 type Time struct {
+40     // sec gives the number of seconds elapsed since
+41     // January 1, year 1 00:00:00 UTC.
+42     sec int64
+43
+44     // nsec specifies a non-negative nanosecond
+45     // offset within the second named by Seconds.
+46     // It must be in the range [0, 999999999].
+47     nsec int32
+48
+49     // loc specifies the Location that should be used to
+50     // determine the minute, hour, month, day, and year
+51     // that correspond to this Time.
+52     // Only the zero Time has a nil Location.
+53     // In that case it is interpreted to mean UTC.
+54     loc *Location
+55 }
+
+When you think about time, you realize that any given point in time is not something that can change
+
+781 func Now() Time {
+782     sec, nsec := now()
+783     return Time{sec + unixToInternal, nsec, Local}
+784 }
+
+This function creates a value of type Time and returns a copy of that Time value back to the caller. A pointer is not used to share the Time value created by the function.
+
+610 func (t Time) Add(d Duration) Time {
+611     t.sec += int64(d / 1e9)
+612     nsec := int32(t.nsec) + int32(d%1e9)
+613     if nsec >= 1e9 {
+614         t.sec++
+615         nsec -= 1e9
+616     } else if nsec < 0 {
+617         t.sec--
+618         nsec += 1e9
+619     }
+620     t.nsec = nsec
+621     return t
+622 }
+
+The method Add is operating on its own copy of the caller’s Time value and returns a copy of its local Time value back to the caller. It’s up to the caller whether they want to replace their Time value with what’s returned or declare a new Time variable to hold the result.
+
+15 // File represents an open file descriptor.
+16 type File struct {
+17     *file
+18 }
+19
+20 // file is the real representation of *File.
+21 // The extra level of indirection ensures that no clients of os
+22 // can overwrite this data, which could cause the finalizer
+23 // to close the wrong file descriptor.
+24 type file struct {
+25     fd int
+26     name string
+27     dirinfo *dirInfo // nil unless directory being read
+28     nepipe int32 // number of consecutive EPIPE in Write
+29 }
+
+The nature of this type is nonprimitive. Values of this type are actually unsafe to be copied
+Since there’s no way to prevent programmers from making copies, the implementation of the File type uses an embedded pointer of an unexported type
+
+238 func Open(name string) (file *File, err error) {
+239     return OpenFile(name, O_RDONLY, 0)
+240 }
+
+shows how a pointer is used to share File type values with the caller of the function. Open creates a value of type File and returns a pointer to that value. When a factory function returns a pointer, it’s a good indication that the nature of the value being returned is nonprimitive.
+
+224 func (f *File) Chdir() error {
+225     if f == nil {
+226         return ErrInvalid
+227     }
+228     if e := syscall.Fchdir(f.fd); e != nil {
+229         return &PathError{"chdir", f.name, e}
+230     }
+231     return nil
+232 }
+
+shows how a pointer receiver is declared even though no changes are made to the receiver value. Since values of type File have a nonprimitive nature, they’re always shared and never copied.
+
+The decision to use a value or pointer receiver should not be based on whether the method is mutating the receiving value. The decision should be based on the nature of the type. One exception to this guideline is when you need the flexibility that value type receivers provide when working with interface values. In these cases, you may choose to use a value receiver even though the nature of the type is nonprimitive
+
+# Interfaces
+
+Polymorphism is the ability to write code that can take on different behavior through the implementation of types. Once a type implements an interface, an entire world of functionality can be opened up to values of that type
+
+## listing34
+## listing35
+
+## Implementation
+
+Interfaces are types that just declare behavior. This behavior is never implemented by the interface type directly but instead by user-defined types via methods.
+
+When a user-defined type implements the set of methods declared by an interface type, values of the user-defined type can be assigned to values of the interface type. This assignment stores the value of the user-defined type into the interface value
+
+Since any user-defined type can implement any interface, method calls against an interface value are polymorphic in nature. The user-defined type in this relationship is often called a concrete type, since interface values have no concrete behavior without the implementation of the stored user-defined value. 
+
+Interface values are two-word data structures. The first word contains a pointer to an internal table called an iTable, which contains type information about the stored value. The iTable contains the type of value that has been stored and a list of methods associated with the value. The second word is a pointer to the stored value. The combination of type information and pointer binds the relationship between the two values. 
+
+when a pointer is assigned to an interface value. In this case, the type information will reflect that a pointer of the assigned type has been stored, and the address being assigned is stored in the second word of the interface value. 
+
+## Method sets
+
+### listing36
+
+Method sets define the set of methods that are associated with values or pointers of a given type. The type of receiver used will determine whether a method is associated with a value, pointer, or both.
+
+Values                    Methods Receivers
+-----------------------------------------------
+    T                        (t T)
+   *T                        (t T) and (t *T)
+
+It says that a value of type T only has methods declared that have a value receiver, as part of its method set. But pointers of type T have methods declared with both value and pointer receivers, as part of its method set.
+
+Looking at these rules from the perspective of the value is confusing. Let’s look at these rules from the perspective of the receiver.
+
+Methods Receivers         Values
+-----------------------------------------------
+   (t T)                     T and *T
+   (t *T)                    *T
+
+It says that if you implement an interface using a pointer receiver, then only pointers of that type implement the interface. If you implement an interface using a value receiver, then both values and pointers of that type implement the interface
+
+The question now is why the restriction? The answer comes from the fact that it’s not always possible to get the address of a value.
+
+### listing46
+
+Values                    Methods Receivers
+-----------------------------------------------
+    T                        (t T)
+   *T                        (t T) and (t *T)
+
+  Methods Receivers         Values
+-----------------------------------------------
+   (t T)                     T and *T
+   (t *T)                    *T
+
+Because it’s not always possible to get the address of a value, the method set for a value only includes methods that are implemented with a value receiver. 
+
+## Polymorphism
+
+### listing48
+
+## Type embedding
+
+
+
+Go allows you to take existing types and both extend and change their behavior. This capability is important for code reuse and for changing the behavior of an existing type to suit a new need. This is accomplished through type embedding. It works by taking an existing type and declaring that type within the declaration of a new struct type. The type that is embedded is then called an inner type of the new outer type.
+
+Through inner type promotion, identifiers from the inner type are promoted up to the outer type. These promoted identifiers become part of the outer type as if they were declared explicitly by the type itself. The outer type is then composed of everything the inner type contains, and new fields and methods can be added. The outer type can also declare the same identifiers as the inner type and override any fields or methods it needs to. This is how an existing type can be both extended and changed.
+
+### listing50
+
+Once we embed the user type inside of admin, we can say that user is an inner type of the outer type admin.
+
+Something special about an inner type is that it always exists in and of itself. This means the inner type never loses its identity and can always be accessed directly
+
+Since the identifiers of the inner type are promoted up to the outer type, we can access the inner type’s identifiers through values of the outer type. Let’s change the sample by adding an interface. 
+
+### listing56
+
+This is where things get interesting. We create the admin outer type variable ad. Then we pass the address of the outer type variable to the sendNotification function. The compiler accepts the assignment of the outer type pointer as a value that implements the notifier interface. But if you look at the entire sample program, you won’t see the admin type implement the interface.
+
+Thanks to inner type promotion, the implementation of the interface by the inner type has been promoted up to the outer type. That means the outer type now implements the interface, thanks to the inner type’s implementation.
+
+What if the outer type doesn’t want to use the inner type’s implementation because it needs an implementation of its own?
+
+### listing60
+
+This shows how the inner type’s implementation was not promoted once the outer type implemented the notify method. But the inner type is always there, in and of itself, so the code is still able to call the inner type’s implementation directly.
+
+## Exporting and unexporting identifiers 
+
+Go supports the exporting and unexporting of identifiers from a package to provide this functionality. Sometimes, you may not want identifiers such as types, functions, or methods to be a part of the public API for a package. In these cases, you need a way to declare those identifiers so they’re unknown outside the package. You need to declare them to be unexported.
+
+### listing64
+
+When an identifier starts with a lowercase letter, the identifier is unexported or unknown to code outside the package. When an identifier starts with an uppercase letter, it’s exported or known to code outside the package.
+
+the code attempts to create a value of the unexported type alertCounter. But this code produces a compiler error that states that the code at line 15 can’t refer to the unexported identifier counters.alertCounter. This identifier is undefined. 
+
+### listing68
+
+If we change the type to start with a capital letter, then the compiler error will go away. This example has been changed to use a factory function to create values of the unexported alertCounter type.
+
+now on line 10 we have a function called New. It’s a convention in Go to give factory functions the name of New.
+
+The New function is returning a value of the unexported type alertCounter, yet main is able to accept that value and create a variable of the unexported type.
+
+This is possible for two reasons. First, identifiers are exported or unexported, not values. Second, the short variable declaration operator is capable of inferring the type and creating a variable of the unexported type. You can never explicitly create a variable of an unexported type, but the short variable declaration operator can.
+
+### listing71
+
+there’s a problem. On line 16 the code attempts to initialize the unexported field email, and the compiler complains the field is unknown. That identifier can’t be accessed outside the entities package, since it has been unexported. 
+
+### listing74
+
+Since the user inner type is unexported, this code can’t access the inner type to initialize it inside the struct literal. Even though the inner type is unexported, the fields declared within the inner type are exported. Since the identifiers from the inner type are promoted to the outer type, those exported fields are known through a value of the outer type.
+
+Therefore, on line 20 and 21 the Name and Email fields from the unexported inner type can be accessed and initialized through the outer type variable a. There’s no access to the inner type directly, since the user type is unexported.
