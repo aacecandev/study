@@ -44,7 +44,7 @@ Ensure a user "anna" is present
 
 Inventory is not needed as long as the inventory is specified in ansible.cfg
 
-    ansible -m command -a "uptime"
+    ansible all -m command -a "uptime"
 
 ## Exploring essential Ansible modules
 
@@ -123,5 +123,3 @@ ansible-doc win_user
     look for /mandatory
 ansible win -m win_user -a "name=anna password=P@ssw0rd123!"
 ```
-
-## 3 USING ANSIBLE PLAYBOOK
