@@ -34,7 +34,7 @@ autocmd FileType yaml setlocal ai ts=2 sw=2 expandtab
   tasks:
   - name: task1
     debug:
-      msg: "Hello world 2" 
+      msg: "Hello world 2"
   - name: task2
     debug:
       msg: "Hello world 1"

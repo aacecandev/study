@@ -137,5 +137,3 @@ ansible_winrm_server_cert_validation=ignore
 - Set up /etc/hosts for hostname resolution to the Windows VM - notice that Windows firewall disallows ping incoming
 - `sudo pip3 install pywinrm`
 - `ansible win -i inventory -m ansible.windows.win_ping`
-
-

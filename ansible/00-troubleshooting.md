@@ -71,15 +71,15 @@ Verify if the system has multiple Python installed
 
 ```
 # rpm -aq | grep python3?-3.
-python38-3.8.3-3.module+el8.3.0+7680+79e7e61a.x86_64  
-python36-3.6.8-2.module+el8.1.0+3334+5cb623d7.x86_64 
+python38-3.8.3-3.module+el8.3.0+7680+79e7e61a.x86_64
+python36-3.6.8-2.module+el8.1.0+3334+5cb623d7.x86_64
 ```
 
 Check the alternatives configuration to verify which is the default Python version the system is pointing to:
 
 ```
 # alternatives  --config python
-* 
+*
 There are 3 programs which provide 'python'.
 
   Selection    Command
@@ -93,4 +93,3 @@ lrwxrwxrwx. 1 root root 18 Dec 29 17:47 /etc/alternatives/python -> /usr/bin/pyt
 lrwxrwxrwx. 1 root root 18 Dec 29 17:43 /etc/alternatives/python3 -> /usr/bin/python3.6
 lrwxrwxrwx. 1 root root 34 Dec 29 17:43 /etc/alternatives/python3-man -> /usr/share/man/man1/python3.6.1.gz
 ```
-
