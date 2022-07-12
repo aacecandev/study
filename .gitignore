@@ -1,18 +1,24 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-# Test binary, built with `go test -c`
-*.test
+# Local History for Visual Studio Code
+.history/
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Built Visual Studio Code Extensions
+*.vsix
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
-dvc/
-git/
+# Support for Project snippet scope
+.vscode/*.code-snippets
+
+# Ignore code-workspaces
+*.code-workspace
