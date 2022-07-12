@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/alejandro/study/golang'
+make: Leaving directory '/home/alejandro/study/golang'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

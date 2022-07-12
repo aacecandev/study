@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/alejandro/study/istio/istio-1.13.0'
+make: Leaving directory '/home/alejandro/study/istio/istio-1.13.0'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
