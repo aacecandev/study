@@ -206,7 +206,7 @@ podman load -i nginx.tar
 - Used to support multiple releases of the same image
 - `latest` is the default tag
 - SemVer
-- To get information about available versions before pulling use 
+- To get information about available versions before pulling use
   - `podman search mariadb`
   - `skopeo inspect docker://registry.redhat.io/rhosp15-rhel8/openstack-mariadb`
 - To apply a tag `podman tag <image-name> <image-name>:<tag>`
@@ -291,3 +291,83 @@ Common container management tasks
   - `podman exec -it nginx bash` -> nginx: master process nginx -g daemon off
 
 #### 4.3 ATTACHING STORAGE TO CONTAINERS
+
+Understanding container storage
+
+- When a container is started, an ephemeral R/W storage layer is added
+- This storage guarantees that data is kept after a restart, but this data is not guaranteed:
+  - After a stop, the data is still available
+  - After using `podman rm` to delete a container, the data is deleted
+- To ensure data persistance, persistent storage must be added
+
+Providing persistent storage
+
+- To do so, a host directory is mounted inside the container
+- As this ensures that data is stored externally, it guarantees the availability of data after the container lifecycle ends
+* - To secure access to the host directory, the **container_file_t** SELinux context is applied. SELinux makes sure that only if the context type matches, the container will get access
+
+Managing SELinux context on the host
+
+- To start with, the host directory must be writable by the container main process
+- If containers are started with a specific UID, the numeric UID can be set. The host might not be aware of the user account name that is used by the container, so you can't use names
+  - Use `podman inspect image` and look for **User** to find which user the container is running as
+- Next, use `sudo chown -R <id>:</id> /hostdir` and set the UID found in the container
+- Then set SELinux
+  - `sudo semanage fcontext -a -t container_file_t "/hostdir(/.*)?"`
+    - writes the SELinux settings to the actual Linux policy
+    - regex is "anything that is found in this directory"
+  - `sudo restorecon -R -v /hostdir`
+    - ensure the settings are applied
+    - `ls -laZ /hostdir`
+- Mount the host directory inside the container
+  - `podman run -v /hostdir:/hostdir mycontainer`
+
+Configuring SELinux automatically
+
+- To ensure correct SELinux labels, they can be set using `semanage fcontext` and `restorecon` as described before
+- This works in all cases and for that reason is the preferred way
+- If the user that runs the container is owner of the directory that is going to be bind-mounted, the **:Z** option can be used to automatically set the appropiate SELinux context
+- This is the recommended approach while using rootless containers
+- `podman run -d -v /srv/dbfiles:/var/lib/mysql:Z -e ....`
+  - image will be pulled again as it is run in a rootless environment
+
+Types of storage
+
+- bind: host level (/somedir)
+- external volumes: nfs
+
+#### 4.4 UNDERSTANDING SELINUX AND CONTAINERS
+
+In SELinux a source try to access a target. In containers a process try to access a file or a port.
+
+Every source and target has its own context label, and SELinux is reading that policy to determine if the process is allowed to access the target.
+
+In containers, the context label is set to container_runtime_t. The file context must to be set to container_file_t. The
+
+If file context is default_t, you'll get an AVC denied
+
+#### 4.5 EXPOSING CONTAINER WORKLOADS
+
+Understanding Podman networking
+
+- Rootless container don't have an IP address and are accessible through port forwarding on the container host only
+- Root containers connect to a bridge, using a container-specific IP address
+- Containers behind the bridge are not directly accessible
+
+Understanding Podman SDN
+
+- Podman networking is according to the Container Network Interface, CNI
+- The CNI standardizes network interfaces for containers in cloud native environments
+- Podman uses the CNI standard to implement a Software Defined Network, SDN
+- According to the `/etc/cni/net.d/87-podman-bridge.confilist`, a bridge is used for this purpose
+- In this model, containers on different hosts cannot directly connect to each other
+- To connect containers running on different hosts, a higher level overlay network is required
+
+Exposing container applications
+
+- To make a container application accessible, port forwarding is used
+- `sudo podman run -d -p 8088:80 nginx` runs a Nginx container on port 8' where port 8088 can be addressed on the host to access its workload
+- In port forwarding, a source IP address can be specified to allow access only if traffic comes from a specific IP address: `sudo podman run -d -p 127.0.0.1:9099:90 nginx`
+- Use `sudo podman port` to fid which port mapping applies to a specific container
+
+### LESSON 4 CREATING CUSTOM IMAGES
