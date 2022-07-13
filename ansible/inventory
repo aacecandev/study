@@ -1,0 +1,6 @@
+[ubuntu]
+ubuntu ansible_host=192.168.1.162
+
+[rocky]
+ansible29 ansible_host=192.168.1.160
+ansible212 ansible_host=192.168.1.161

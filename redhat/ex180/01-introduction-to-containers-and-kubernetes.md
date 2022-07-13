@@ -371,3 +371,19 @@ Exposing container applications
 - Use `sudo podman port` to fid which port mapping applies to a specific container
 
 ### LESSON 4 CREATING CUSTOM IMAGES
+
+#### 5.1 OPTIONS FOR WORKING WITH CUSTOM CONTAINER IMAGES
+
+Understanding options to work with a images
+
+- Commit changes to an image: not good from a perspective of maintainability, build automation, and repeatability
+- Dockerfile: standard for building custom images that is easy to share
+- Openshift S2I: can be used as a standalone s2i utility, or as part of OpenShift to build custom applications from source code.
+
+Where to get images
+
+- Red Hat Software Collections Library (RHSCL) provides access to the latest versions of tools that do not fit the default RHEL release schedule, and containes Dockerfiles for many products
+  - Community versions of these Dockerfiles are on https://github.com/sclorg?=-container
+- Red Hat Container Catalog (RHCC) contains Red Hat containers that have gone through a quality assurance process
+- Quay.io provides access to communitiy-contributed container images
+- Docker Hub is a broad platform of container iamges that has not been tested or verified in any way

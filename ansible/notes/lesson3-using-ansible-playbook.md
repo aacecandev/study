@@ -46,3 +46,5 @@ autocmd FileType yaml setlocal ai ts=2 sw=2 expandtab
     debug:
       msg: "Hello world ubuntu"
 ```
+
+`ansible-playbook myplay.yml`
