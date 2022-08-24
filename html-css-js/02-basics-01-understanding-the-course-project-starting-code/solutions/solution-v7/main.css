@@ -1,0 +1,26 @@
+/* 
+  Inheritance means that an element also inherits some styles of the parent element.
+
+  Has a very low specificity, so it can be easily overwritten. Even below the browser default styles.
+*/
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+#product-overview {
+  background: #ff116b;
+}
+
+.section-title {
+  color: #2ddf5c;
+}
+
+h1 {
+  color: white;
+  font-family: 'Anton', sans-serif;
+}
+
+/* h1 {
+  font-family: sans-serif;
+} */

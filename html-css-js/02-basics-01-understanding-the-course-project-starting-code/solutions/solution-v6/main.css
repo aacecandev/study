@@ -1,0 +1,36 @@
+/* Styles are parsed from top to bottom, so the last style defined will override previous styles. */
+/* So the first h1 style will override the second h1 style definition */
+
+/* But there is also specificity */
+/* If we move the .section-title style above the h1 style, it will still be more specific */
+
+/* So the order does matter only if you use the same selector */
+
+/* Also it happens that the overriding only happens for those properties defined in the most
+specific one, so if the more specific style does not override the less specific property font-family,
+the less specific font-family property will still apply
+*/
+
+/* Specificity priority */
+
+/* Inline styles */
+/* #ID selectors */
+/* .class, :pseudo-class and [attribute] selectors */
+/* <Tag> and ::pseudo-element selectors */
+
+#product-overview {
+  background: #ff116b;
+}
+
+.section-title {
+  color: #2ddf5c;
+}
+
+h1 {
+  color: white;
+  font-family: 'Anton', sans-serif;
+}
+
+h1 {
+  font-family: sans-serif;
+}

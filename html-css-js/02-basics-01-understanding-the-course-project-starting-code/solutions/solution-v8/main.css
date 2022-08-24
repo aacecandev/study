@@ -1,0 +1,79 @@
+/* 
+  The h1 selector is passing color and font-family to both h1 selectors
+    - #product-overview
+    - #plans
+
+  But I want to use the default one
+*/
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+#product-overview {
+  background: #ff116b;
+}
+
+.section-title {
+  color: #2ddf5c;
+  /* 
+    This is one of the solutions
+  */
+  font-family: inherit;
+}
+
+/* 
+  But it is semantically more convenient to use a combinator to say
+  "the h1 tag inside the section with ID #product-overview"
+*/
+
+#product-overview h1 {
+  color: white;
+  font-family: 'Anton', sans-serif;
+}
+
+h1 {
+  /* 
+    Now this rule doesn't have effect on any of the h1 tags due to specificity
+  */
+  font-family: sans-serif;
+}
+
+/* 
+  Combinators allow us to select elements by passing more information
+  4 types of combinators:
+  - adjacent sibling -> h2 + p {} // selects all p that are immediately preceded by a h2 tag
+    - Elements share the same parent
+    - Second element comes immediately after the first element
+      <div>
+        <h2>Not applied</h2>
+        <p>CSS applied</p>
+      </div>
+  - general sibling -> div ~ p {} // selects all p that are preceded by a h2 tag, no matter if it's adjacent or not
+    - Second element is a direct child of first element
+    - Second element comes after the first element
+      <div>
+        <h2>Not applied</h2>
+        <p>CSS applied</p>
+        <h3>Not applied</h3>
+        <p>CSS applied</p>
+      </div>
+  - child -> div > p {} // selects all p tags that are children of a div tag
+    - Second element is a direct child of first element
+      <div>
+        <div>Not applied</div>
+        <p>CSS applied</p>
+        <article>Not applied</article>
+          <p>Not applied</p>
+        <p>CSS applied</p>
+      </div>
+  - descendant -> div p {} // selects all p tags that are descendants of a div tag
+    - Second element is a descendant of first element
+      <div>
+        <div>Not applied</div>
+        <p>CSS applied</p>
+        <article>Not applied</article>
+          <p>CSS applied</p>
+        <p>CSS applied</p>
+      </div>
+*/

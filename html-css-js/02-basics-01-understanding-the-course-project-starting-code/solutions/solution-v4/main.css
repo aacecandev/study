@@ -1,0 +1,11 @@
+section {
+  background: #ff116b;
+}
+
+h1 {
+  color: white;
+  /* Default */
+  /* font-family: sans-serif, serif, monospace; */
+
+  font-family: 'Anton', sans-serif;
+}
