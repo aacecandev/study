@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  8 10:44:30 2022
+# Make data base, printed on Tue Aug  2 09:46:53 2022
 
 # Variables
 
@@ -29,13 +31,15 @@ XDG_SESSION_CLASS = user
 # environment
 SPICETIFY_INSTALL = /home/alejandro/spicetify-cli
 # environment
-XDG_SESSION_TYPE = x11
+GOENV_ROOT = /home/alejandro/.goenv
 # environment
-VSCODE_LOG_NATIVE = false
+XDG_SESSION_TYPE = x11
 # environment
 NVM_INC = /home/alejandro/.nvm/versions/node/v14.18.0/include/node
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+# environment
+IM_CONFIG_PHASE = 1
 # environment
 THEFUCK_HISTORY_LIMIT = 2000
 # automatic
@@ -63,7 +67,7 @@ _ = /usr/bin/code
 # environment
 POETRY_HOME = /home/alejandro/.poetry
 # environment
-JOURNAL_STREAM = 8:132739
+JOURNAL_STREAM = 8:98713
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -72,18 +76,20 @@ SAVEHIST = 10000
 XDG_DESKTOP_DIR = /home/alejandro/Desktop
 # makefile
 MAKEFILE_LIST := 
+# environment
+JAVA_HOME = /home/alejandro/.sdkman/candidates/java/current
 # automatic
 @F = $(notdir $@)
 # environment
 ALF_RC_FILE = /home/alejandro/.alf/.alfrc
 # environment
-IM_CONFIG_PHASE = 1
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
 AWS_VAULT_PASS_PREFIX = aws-vault
 # environment
 USERNAME = alejandro
 # environment
-MAKELEVEL := 0
+GOENV_SHELL = zsh
 # environment
 MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
 # environment
@@ -91,13 +97,11 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-KREW_ROOT = /home/alejandro/.config/.krew
+KREW_ROOT = /home/alejandro/.config
 # environment
 ANSIBLE_HOSTS = /etc/ansible/hosts
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
-# environment
-VSCODE_VERBOSE_LOGGING = true
 # environment
 VSCODE_CLI = 1
 # environment
@@ -109,9 +113,7 @@ SYSTEM = Linux
 # environment
 XDG_DOCUMENTS_DIR = /home/alejandro/Documents
 # environment
-MANAGERPID = 16743
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-00b602af-e755-4e4d-98f0-b052ba93fb5e.sock
+MANAGERPID = 7742
 # environment
 LC_NAME = es_ES.UTF-8
 # environment
@@ -127,7 +129,7 @@ XDG_TEMPLATES_DIR = /home/alejandro/Templates
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /usr/local/go/bin:/home/alejandro/.local/bin:/home/alejandro/.nvm/versions/node/v14.18.0/bin:/home/alejandro/.tfenv/bin:/home/alejandro/spicetify-cli:/home/alejandro/.shenv/bin:/home/alejandro/.config/rustup:/home/alejandro/.config/cargo:/home/alejandro/.config/cargo/bin:/home/alejandro/bin/robo3t/bin:/home/alejandro/.local/bin/gems:/home/alejandro/.poetry/bin:/home/alejandro/.local/bin:/home/alejandro/bin:/home/alejandro/.config/node_modules:/home/alejandro/.config/node_modules/bin:/home/alejandro/.config/nvm:/home/alejandro/.minishift/cache/oc/v3.11.0/linux:/home/alejandro/.config/.krew/bin:/home/alejandro/go/bin:/home/alejandro/.arkade/bin:/home/alejandro/.zinit/plugins/laggardkernel---git-ignore/bin:/usr/local/bin:/usr/local/sbin:/home/alejandro/.local/bin:/home/alejandro/anaconda3/bin:/home/alejandro/anaconda3/condabin:/home/alejandro/.nvm/versions/node/v14.18.0/bin:/home/alejandro/.tfenv/bin:/home/alejandro/spicetify-cli:/home/alejandro/.shenv/bin:/rustup:/cargo:/cargo/bin:/home/alejandro/bin/robo3t/bin:/home/alejandro/.local/bin/gems:/home/alejandro/.poetry/bin:/home/alejandro/bin:/node_modules:/node_modules/bin:/home/alejandro/.config/nvm:/home/alejandro/.minishift/cache/oc/v3.11.0/linux:/.krew/bin:/home/alejandro/go/bin:/home/alejandro/.arkade/bin:/home/alejandro/.zinit/plugins/direnv---direnv:/home/alejandro/.zinit/polaris/bin:/home/alejandro/.pyenv/shims:/home/alejandro/.pyenv/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alejandro/.bin:/home/alejandro/.rvm/bin:/opt/nvim-linux64/bin:~/anaconda3/bin:/home/alejandro/.config/Code/User/globalStorage/ms-vscode-remote.remote-containers/cli-bin:/home/alejandro/anaconda3/bin:/home/alejandro/.rvm/bin:/opt/nvim-linux64/bin:~/anaconda3/bin:/home/alejandro/.config/Code/User/globalStorage/ms-vscode-remote.remote-containers/cli-bin
+PATH = /home/alejandro/.goenv/versions/1.16.15/bin:/home/alejandro/.goenv:/home/alejandro/.goenv/bin:/home/alejandro/.goenv/shims:/usr/local/google-cloud-sdk/bin:/home/alejandro/.local/bin:/home/alejandro/.nvm/versions/node/v14.18.0/bin:/usr/local/cuda-11.2/bin:/home/alejandro/.tfenv/bin:/home/alejandro/spicetify-cli:/home/alejandro/.shenv/bin:/home/alejandro/.config/rustup:/home/alejandro/.config/cargo:/home/alejandro/.config/cargo/bin:/home/alejandro/bin/robo3t/bin:/home/alejandro/.local/bin/gems:/home/alejandro/.poetry/bin:/home/alejandro/.local/bin:/home/alejandro/bin:/home/alejandro/.config/node_modules:/home/alejandro/.config/node_modules/bin:/home/alejandro/.config/nvm:/home/alejandro/.minishift/cache/oc/v3.11.0/linux:/home/alejandro/.config/bin:/usr/local/go/bin:/home/alejandro/go/bin:/home/alejandro/go/bin:/home/alejandro/.goenv/bin:/home/alejandro/.arkade/bin:/home/alejandro/.local/share/zinit/plugins/laggardkernel---git-ignore/bin:/usr/local/bin:/usr/local/sbin:/home/alejandro/.goenv:/home/alejandro/.goenv/bin:/home/alejandro/.goenv/shims:/home/alejandro/.sdkman/candidates/sbt/current/bin:/home/alejandro/.sdkman/candidates/java/current/bin:/usr/local/google-cloud-sdk/bin:/home/alejandro/.local/bin:/home/alejandro/anaconda3/bin:/home/alejandro/anaconda3/condabin:/home/alejandro/.nvm/versions/node/v14.18.0/bin:/usr/local/cuda-11.2/bin:/home/alejandro/.tfenv/bin:/home/alejandro/spicetify-cli:/home/alejandro/.shenv/bin:/rustup:/cargo:/cargo/bin:/home/alejandro/bin/robo3t/bin:/home/alejandro/.local/bin/gems:/home/alejandro/.poetry/bin:/home/alejandro/bin:/node_modules:/node_modules/bin:/nvm:/home/alejandro/.minishift/cache/oc/v3.11.0/linux:/home/alejandro/.krew/bin:/usr/local/go/bin:/home/alejandro/go/bin:/home/alejandro/.arkade/bin:/home/alejandro/.local/share/zinit/plugins/direnv---direnv:/home/alejandro/.local/share/zinit/polaris/bin:/home/alejandro/.pyenv/shims:/home/alejandro/.pyenv/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alejandro/.local/share/JetBrains/Toolbox/scripts:/home/alejandro/.bin:/home/alejandro/.rvm/bin:/opt/nvim-linux64/bin:~/anaconda3/bin:/home/alejandro/.config/Code/User/globalStorage/ms-vscode-remote.remote-containers/cli-bin:/home/alejandro/go/1.16.15/bin:/home/alejandro/anaconda3/bin:/home/alejandro/.rvm/bin:/opt/nvim-linux64/bin:~/anaconda3/bin:/home/alejandro/.config/Code/User/globalStorage/ms-vscode-remote.remote-containers/cli-bin:/home/alejandro/go/1.16.15/bin
 # environment
 THEFUCK_NUM_CLOSE_MATCHES = 5
 # environment
@@ -139,13 +141,19 @@ NVM_LAZY_LOAD = true
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/xps9500:@/tmp/.ICE-unix/17283,unix/xps9500:/tmp/.ICE-unix/17283
+GJS_DEBUG_OUTPUT = stderr
+# environment
+SESSION_MANAGER = local/xps9500:@/tmp/.ICE-unix/8654,unix/xps9500:/tmp/.ICE-unix/8654
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
+SDKMAN_DIR = /home/alejandro/.sdkman
+# environment
+SDKMAN_CANDIDATES_API = https://api.sdkman.io/2
+# environment
 LC_MESSAGES = en_US.UTF-8
 # environment
-GOPATH = /home/alejandro/go
+GOPATH = /home/alejandro/go/1.16.15
 # environment
 NVM_BIN = /home/alejandro/.nvm/versions/node/v14.18.0/bin
 # environment
@@ -153,13 +161,13 @@ CONDA_PREFIX = /home/alejandro/anaconda3
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
-VSCODE_LOG_STACK = false
+SDKMAN_PLATFORM = linuxx64
 # environment
 THEFUCK_RULES = sudo:no_command
 # environment
 PYENV_ROOT = /home/alejandro/.pyenv
 # environment
-INVOCATION_ID = d20432c2de2b45b4a2c9c50ad913ee53
+INVOCATION_ID = a227d9689c13486da520a795ccb0b44c
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -171,7 +179,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 39893
+GIO_LAUNCHED_DESKTOP_FILE_PID = 23389
 # automatic
 %F = $(notdir $%)
 # environment
@@ -181,11 +189,9 @@ DISPLAY = :1
 # environment
 CONDA_EXE = /home/alejandro/anaconda3/bin/conda
 # environment
-TMUX_PANE = %27
+TMUX_PANE = %11
 # environment
 NPM_PATH = /home/alejandro/.config/node_modules
-# environment
-VSCODE_PIPE_LOGGING = true
 # environment
 PWD = /home/alejandro/study/golang
 # default
@@ -193,7 +199,7 @@ PWD = /home/alejandro/study/golang
 # environment
 GEM_HOME = /home/alejandro/.local/bin/gems
 # environment
-SSH_AGENT_PID = 17246
+SSH_AGENT_PID = 8617
 # environment
 XDG_PUBLICSHARE_DIR = /home/alejandro/Public
 # environment
@@ -203,17 +209,17 @@ ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
 GTK_MODULES = gail:atk-bridge
 # environment
-GOMODCACHE = /home/alejandro/go/pkg/mod
+GOMODCACHE = /home/alejandro/go/1.16.15/pkg/mod
 # environment
 HOME = /home/alejandro
 # environment
-XDG_CACHE_HOME = /home/alejandro/.config/cache
+LD_LIBRARY_PATH = /home/alejandro/Downloads/cuda/lib64:/usr/local/cuda-11.2/lib64:/home/alejandro/Downloads/cuda/lib64:/usr/local/cuda-11.2/lib64
 # environment
 BACKUP_DIR = /home/alejandro/dotfiles/backup
 # environment
 XDG_PICTURES_DIR = /home/alejandro/Pictures
 # environment
-VSCODE_CODE_CACHE_PATH = /home/alejandro/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+VSCODE_CODE_CACHE_PATH = /home/alejandro/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 TMUX_PLUGIN_MANAGER_PATH = /home/alejandro/.tmux/plugins/
 # environment
@@ -239,13 +245,15 @@ TILIX_BACKUP_DIR = /home/alejandro/dotfiles/backup/tilix
 # environment
 HISTFILE = /home/alejandro/.history
 # environment
-GI_TEMPLATE = /home/alejandro/.zinit/plugins/laggardkernel---git-ignore/.git-ignore
+GI_TEMPLATE = /home/alejandro/.local/share/zinit/plugins/laggardkernel---git-ignore/.git-ignore
 # environment
 XDG_VIDEOS_DIR = /home/alejandro/Videos
 # environment
 LC_TIME = en_US.UTF-8
 # environment
 LC_COLLATE = en_US.UTF-8
+# environment
+SDKMAN_VERSION = 5.15.0
 # environment
 COLORTERM = truecolor
 # default
@@ -259,6 +267,10 @@ QT_IM_MODULE = ibus
 # environment
 SHLVL = 2
 # environment
+SBT_HOME = /home/alejandro/.sdkman/candidates/sbt/current
+# environment
+XDG_CACHE_HOME = /home/alejandro/.cache
+# environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # default
 MAKE_VERSION := 4.2.1
@@ -271,7 +283,7 @@ LC_MONETARY = en_US.UTF-8
 # environment
 XDG_CURRENT_DESKTOP = Unity
 # environment
-GOROOT = /usr/local/go
+GOROOT = /home/alejandro/.goenv/versions/1.16.15
 # environment
 LIBVIRT_DEFAULT_URI = qemu:///system
 # automatic
@@ -285,12 +297,9 @@ CONDA_SHLVL = 1
 # default
 MAKE_COMMAND := make
 # environment
- 
-make: *** No rule to make target 'all'.  Stop.
-
-ZPFX = /home/alejandro/.zinit/polaris
+ZPFX = /home/alejandro/.local/share/zinit/polaris
 # environment
-OLDPWD = /home/alejandro/study/golang/exercism
+OLDPWD = /home/alejandro/study
 # environment
 ZSH_CACHE_DIR = /home/alejandro/.cache/zinit
 # default
@@ -300,7 +309,7 @@ CONDA_DEFAULT_ENV = base
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-c97850c2-1.68.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-c97850c2-1.69.2-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -314,15 +323,16 @@ DOTFILES = /home/alejandro/dotfiles
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
-_FASD_DATA = /home/alejandro/.fasd.d/8
+_FASD_DATA = /home/alejandro/.fasd.d/0
 # environment
-TMUX = /tmp//tmux-1000/default,682251,15
+TMUX = /tmp//tmux-1000/default,24006,0
 # environment
 GDK_BACKEND = x11
+ 
 # environment
 LESSCHARSET = utf-8
 # environment
-TMUX_SESSION = 8
+TMUX_SESSION = 0
 # environment
 NO_AT_BRIDGE = 1
 # environment
@@ -330,7 +340,11 @@ PROG = croc
 # environment
 AWS_VAULT_BACKEND = pass
 # environment
+MAKELEVEL := 0
+# environment
 QT_ACCESSIBILITY = 1
+# environment
+CUDA_HOME = /usr/local/cuda
 # environment
 ALF_ALIASES_FILE = /home/alejandro/.alf/alf
 # environment
@@ -354,6 +368,8 @@ LC_MEASUREMENT = es_ES.UTF-8
 # environment
 XDG_CONFIG_HOME = /home/alejandro/.config
 # environment
+SDKMAN_CANDIDATES_DIR = /home/alejandro/.sdkman/candidates
+# environment
 EDITOR = vim
 # environment
 LC_ALL = C
@@ -368,9 +384,11 @@ XDG_MUSIC_DIR = /home/alejandro/Music
 # environment
 CONDA_PYTHON_EXE = /home/alejandro/anaconda3/bin/python
 # environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
 LC_PAPER = es_ES.UTF-8
 # environment
-XDG_DATA_HOME = /home/alejandro/.config/local/share
+XDG_DATA_HOME = /home/alejandro/.local/share
 # default
 SUFFIXES := 
 # environment
@@ -394,7 +412,7 @@ LC_ADDRESS = es_ES.UTF-8
 # environment
 PASSWORD_STORE_ENABLE_EXTENSIONS = true
 # environment
-TILIX_ID = 3bb29dec-3fad-404b-90bc-eb70fbaa0f4c
+TILIX_ID = 7f9c2c79-389d-4c6a-b086-04eccf31ac05
 # environment
 TMUXP_CONFIGDIR = /home/alejandro/.config/tmuxp
 # environment
@@ -408,13 +426,13 @@ PASSWORD_STORE_EXTENSIONS_DIR = /home/alejandro/.pass_extensions
 # environment
 THEFUCK_WAIT_COMMAND = 10
 # environment
-VSCODE_PID = 41489
+VSCODE_PID = 14849
 # environment
 _CLI_ZSH_AUTOCOMPLETE_HACK = 1
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=200/1024=20%, Rehash=0, Collisions=39/222=18%
+# Load=209/1024=20%, Rehash=0, Collisions=46/231=20%
 
 # Pattern-specific Variable Values
 
@@ -422,9 +440,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66315, inode 11503271): 12 files, no impossibilities.
+# . (device 66315, inode 11503271): 14 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -474,12 +492,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 236 B / avg = 11 B
-# current buf: size = 8162 B / used = 236 B / count = 20 / avg = 11 B
+# strcache buffers: 1 (0) / strings = 22 / storage = 290 B / avg = 13 B
+# current buf: size = 8162 B / used = 290 B / count = 22 / avg = 13 B
 
-# strcache performance: lookups = 23 / hit rate = 13%
+# strcache performance: lookups = 25 / hit rate = 12%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Fri Jul  8 10:44:30 2022
+# Load=22/8192=0%, Rehash=0, Collisions=1/25=4%
+# Finished Make data base on Tue Aug  2 09:46:54 2022
 
  

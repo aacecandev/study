@@ -368,7 +368,7 @@ Exposing container applications
 - To make a container application accessible, port forwarding is used
 - `sudo podman run -d -p 8088:80 nginx` runs a Nginx container on port 8' where port 8088 can be addressed on the host to access its workload
 - In port forwarding, a source IP address can be specified to allow access only if traffic comes from a specific IP address: `sudo podman run -d -p 127.0.0.1:9099:90 nginx`
-- Use `sudo podman port` to fid which port mapping applies to a specific container
+- Use `sudo podman port` to find which port mapping applies to a specific container
 
 ### LESSON 4 CREATING CUSTOM IMAGES
 

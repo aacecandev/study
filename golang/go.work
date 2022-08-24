@@ -1,3 +1,0 @@
-go 1.18
-
-use ./learngo/03-packages-and-scopes/exercises/01-packages/solution
