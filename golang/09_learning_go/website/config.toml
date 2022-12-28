@@ -1,0 +1,16 @@
+baseURL = 'https://learning-go-book.dev/'
+languageCode = 'en-us'
+title = 'Learning Go'
+theme = 'hallo'
+
+[Author]
+name = 'Jon'
+[params]
+greeting = 'Greetings Gophers!'
+[params.colors]
+background = '#79D4FD'
+[[params.links]]
+iconset = 'fa-solid'
+icon = 'book'
+title = 'Download PDF'
+url = 'chapter15_learningGo.pdf'
