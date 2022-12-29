@@ -1,0 +1,13 @@
+<h1>Hello, {{.Name}}</h1>
+<p>Bio: {{.Bio}}</p>
+
+<script>
+  const user = {
+    {{/* vales will be put between quotation marks */}}
+    "name": {{.Name}}, 
+    "bio": {{.Bio}},
+    {{/* integer will not be put between quotation marks */}}
+    "age": {{.Age}}
+  };
+  console.log(user);
+</script>
