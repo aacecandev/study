@@ -1,31 +1,27 @@
 package main
 
 import (
-	"html/template"
-	"os"
+	"net/http"
+
+	"mvc/views"
 )
 
-type User struct {
-	Name string
-	// Bio  string        // this encodes the script
-	Bio template.HTML // this leaves the script as it is
-	Age int
-}
+var index *views.View
+var contact *views.View
 
 func main() {
-	t, err := template.ParseFiles("hello.gohtml")
-	if err != nil {
-		panic(err)
-	}
+	index = views.NewView("bootstrap", "views/index.gohtml")
+	contact = views.NewView("bootstrap", "views/contact.gohtml")
 
-	user := User{
-		Name: "John Doe",
-		Bio:  `<script>alert("XSS")</script>`,
-		Age:  42,
-	}
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/contact", contactHandler)
+	http.ListenAndServe(":5000", nil)
+}
 
-	err = t.Execute(os.Stdout, user)
-	if err != nil {
-		panic(err)
-	}
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	index.Render(w, nil)
+}
+
+func contactHandler(w http.ResponseWriter, r *http.Request) {
+	contact.Render(w, nil)
 }
