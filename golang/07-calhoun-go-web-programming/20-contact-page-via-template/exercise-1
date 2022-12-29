@@ -1,0 +1,5 @@
+Ex1 - Add an FAQ page
+
+Try to create an FAQ page to your application and set it up so that when we visit localhost:3000/faq in our app the page is rendered.
+
+You can fill the page with whatever HTML content you prefer, but you should make it different from the other pages you are certain your code is working as you intended.
