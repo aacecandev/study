@@ -1,0 +1,40 @@
+Template Exercises
+
+At this point you likely have a very rough idea of how templates work in Go. You aren't expected to understand them perfectly, but you should understand what they are used for at a high level.
+
+If you are interested in further reading about templates, consider checking out the html/template docs and the following articles:
+
+    An Introduction to Templates in Go - A free series I wrote about Go templates
+    Writing Web Applications - A fairly short wiki provided by the Go team covering some of the basics for building web apps with Go. This includes using the html/template package.
+
+If you want to read more about encoding you can do a search for "HTML character entities" or "HTML character codes". There is also a w3.org page that shows every character entity along with its code.
+
+In this lesson we are going to do some exercises to solidify your knowledge. Some of the exercises require more challenging techniques, but don't be discouraged if you can't solve them all. Try your best and we will look at each technique later in the course as we need to use it.
+Ex1 - Use template variables
+
+Head over to cmd/exp/ and experiment with using new variable names inside your template and update the Go code to work with the template.
+
+You can approach this in two steps:
+
+    Adding a new field to the User type and updating the user variable in your Go code
+    Reference the new field inside of your hello.gohtml template
+
+Ex2 - Experiment with different data types
+
+Up until now we have mostly used strings in our HTML templates. Try experimenting with a few other data types like integers, floats, maps, and slices. Can you figure out how to iterate over a slice inside of your template and generate HTML for each element in it? What about a map - how do you access keys and values of a map?
+
+We are using the html/template package, but some of the docs are better in the text/template package. For instance, the list of actions such as {{range pipeline}} are better in the text/template package. Luckily, all of these actions can be used the same way between the two packages, so you just need to read the text/template docs a bit.
+Ex3 - Learn how to use nested data
+
+Update your User type inside cmd/exp/exp.go to include nested data types, then experiment with using nested data like this in your template.
+
+Next, try adding a map field to your User type. How do you access individual keys and values of that map? If you know the key for the value you want, how do you lookup a specific value in the map?
+
+This may be a bit harder to figure out, especially if you have a limited background with templates and Go, but attempting to figure it out on your own will really help reinforce everything you are learning.
+Ex4 - Create an if/else statement in your template
+
+Check out the available actions in the template packages: https://golang.org/pkg/text/template/#hdr-Actions
+
+Once you have an idea of what is available, update your template to use an if and an else statement inside of your template.
+
+This will be similar to writing an if/else block inside of your Go code, but because we are writing in templates there will be some differences.

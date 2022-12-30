@@ -1,0 +1,39 @@
+{{/* The and function */}}
+
+{{/* and -> if a then b else a */}}
+{{/* or -> if a then a else b so b will never be evaluated if a is not empty */}}
+{{if and .User .User.Admin}}
+  You are an admin user!
+{{else}}
+  Access denied!
+{{end}}
+
+{{/* Comparison functions (equals, less than, etc) */}}
+{{/* 
+
+    eq - Returns the boolean truth of arg1 == arg2
+    ne - Returns the boolean truth of arg1 != arg2
+    lt - Returns the boolean truth of arg1 < arg2
+    le - Returns the boolean truth of arg1 <= arg2
+    gt - Returns the boolean truth of arg1 > arg2
+    ge - Returns the boolean truth of arg1 >= arg2
+
+ */}}
+
+{{if (ge .Usage .Limit)}}
+  <p class="danger">
+    You have reached your API usage limit. Please upgrade or contact support for more help.
+  </p>
+{{else if (gt .Usage .Warning)}}
+  <p class="warning">
+    You have used {{.Usage}} of {{.Limit}} API calls and are nearing your limit. Have you considered upgrading?
+  </p>
+{{else if (eq .Usage 0)}}
+  <p>
+    You haven't used the API yet! What are you waiting for?
+  </p>
+{{else}}
+  <p>
+    You have used {{.Usage}} of {{.Limit}} API calls.
+  </p>
+{{end}}
