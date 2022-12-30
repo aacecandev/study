@@ -2,25 +2,31 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 
-	"github.com/aacecandev/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-
-	"mvc/views"
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
-	t, err := views.Parse(filepath)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	tpl, err := template.ParseFiles(filepath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, nil)
+
+	err = tpl.Execute(w, nil)
+	if err != nil {
+		log.Printf("executing template: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {

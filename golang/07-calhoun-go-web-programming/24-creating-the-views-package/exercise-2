@@ -1,0 +1,17 @@
+
+# Chi Exercises
+
+This lesson consists of two optional exercises intended to help you learn a bit more about Chi.
+
+## Ex1 - Add a URL Parameter
+
+Read the docs and see if you can add a URL parameter to one of your routes, retrieve it in your handler, and output it to the resulting HTML.
+
+For example, imagine that we wanted to add support for a path used to show individual galleries. We might use the path /galleries/<id-here>. See if you can create a handle that retrieves the id from the URL using Chi, and setup the Chi router to direct requests to the correct handler.
+
+*Hint: See [these docs](https://github.com/go-chi/chi#url-parameters) if you need some guidance. You shouldn't need to use context, just the URLParam method.
+Ex2 - Experiment with Chi's builtin middleware
+
+Chi provides quite a few builtin middleware. One is the Logger middleware, which will track how long each request is taking. Try to add it to your application, then to only a single route.
+
+What other types of uses could you imagine middleware serving in an application?
