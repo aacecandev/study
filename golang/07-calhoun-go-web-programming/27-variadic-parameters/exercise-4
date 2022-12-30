@@ -1,0 +1,49 @@
+Let’s look at some exercise problems to help reenforce what we have learned.
+Ex1 - Add a new static page to your app
+
+We introduced the views package and the controllers package, along with functions and types that allow us to create new static pages. Try adding a few more to your application to make sure you understand how everything works.
+Ex2 - Experiment a bit with errors
+
+At this point we have seen how to use fmt.Errorf to wrap errors.
+
+func B() error {
+	err := A()
+  if err != nil {
+  	return fmt.Errorf("b: %w", err)
+  }
+  return nil
+}
+
+This adds additional context if an error gets logged, but what if we need to determine whether the underlying error was of a specific type? For instance, what if we need to know whether an error stemmed from an ErrNotFound error?
+
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func main() {
+	err := B()
+  // TODO: Determine if the `err` variable is an `ErrNotFound`
+}
+
+var ErrNotFound = errors.New("not found")
+
+func A() error {
+	return ErrNotFound
+}
+
+func B() error {
+	err := A()
+  if err != nil {
+  	return fmt.Errorf("b: %w", err)
+  }
+  return nil
+}
+
+Look up Go’s errors package and its documentation to see if you can learn how to determine if a wrapped error is a specific error variable.
+
+Hint: If you get stuck, look at errors.Is.
+
+As a followup, read about errors.As and see if you can use it or think of cases where it might be useful.

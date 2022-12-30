@@ -12,3 +12,5 @@ https://go.dev/doc/articles/wiki/
 https://www.calhoun.io/intro-to-templates-p3-functions/
 
 https://go.dev/blog/go1.13-errors
+
+https://www.calhoun.io/closures-in-go/
