@@ -1,3 +1,10 @@
 go 1.18
 
-use ./18-contextual-encoding
+use (
+	./18-contextual-encoding
+	./19-home-page-via-template
+	./20-contact-page-via-template
+	./21-faq-page-via-template
+	./21-faq-page-via-template/cmd/exp
+	./24-creating-the-views-package
+)

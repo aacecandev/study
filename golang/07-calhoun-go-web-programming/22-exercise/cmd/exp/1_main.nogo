@@ -1,0 +1,66 @@
+package main
+
+import (
+	"html/template"
+	"net/http"
+)
+
+var testTemplate *template.Template
+
+type ViewData struct {
+	Name    string
+	Widgets []Widget
+}
+
+type Widget struct {
+	Name  string
+	Price int
+}
+
+// Browser shows: Hello, John Smith!
+// func handler(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/html")
+
+// 	vd := ViewData{"John Smith"}
+// 	err := testTemplate.Execute(w, vd)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 	}
+// }
+
+// Browser shows: Hello, ! without the conditional
+// func handler(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/html")
+
+// 	err := testTemplate.Execute(w, nil)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 	}
+// }
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+
+	err := testTemplate.Execute(w, ViewData{
+		Name: "John Smith",
+		Widgets: []Widget{
+			Widget{"Blue Widget", 12},
+			Widget{"Red Widget", 12},
+			Widget{"Green Widget", 12},
+		},
+	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func main() {
+	var err error
+	testTemplate, err = template.ParseFiles("actions.gohtml")
+	if err != nil {
+		panic(err)
+	}
+
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":5000", nil)
+}

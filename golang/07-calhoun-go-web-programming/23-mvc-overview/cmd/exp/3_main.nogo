@@ -1,0 +1,48 @@
+package main
+
+import (
+	"html/template"
+	"net/http"
+)
+
+var testTemplate *template.Template
+
+type ViewData struct {
+	User User
+}
+
+type User struct {
+	ID    int
+	Email string
+}
+
+func (u User) HasPermission(feature string) bool {
+	if feature == "feature-a" {
+		return true
+	} else {
+		return false
+	}
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+
+	vd := ViewData{
+		User: User{1, "jon@calhoun.io"},
+	}
+	err := testTemplate.Execute(w, vd)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func main() {
+	var err error
+	testTemplate, err = template.ParseFiles("functions_2.gohtml")
+	if err != nil {
+		panic(err)
+	}
+
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":5000", nil)
+}
