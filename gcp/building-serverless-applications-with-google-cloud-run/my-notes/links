@@ -1,0 +1,33 @@
+https://github.com/GoogleCloudPlatform/cloud-run-samples
+https://github.com/google-github-actions/deploy-cloudrun
+https://github.com/go-sql-driver/mysql/#dsn-data-source-name
+https://github.com/christippett/terraform-google-cloud-sql-pgbouncer
+https://github.com/wietsevenema/oidc
+https://github.com/googleapis/google-api-go-client
+https://github.com/aertje/cloud-tasks-emulator
+https://github.com/GoogleCloudPlatform/cloud-foundation-fabric
+https://cloud.google.com/logging/docs/reference/libraries
+https://cloud.google.com/error-reporting
+https://github.com/yfuruyama/crzerolog
+https://cloud.google.com/trace/docs/setup/go
+https://cloud.google.com/monitoring
+https://www.youtube.com/watch?v=q6kyHDleioA
+https://www.cncf.io/wp-content/uploads/2020/08/CNCF-Webinar-Navigating-the-Sea-of-Local-Clusters-.pdf
+
+https://www.todobackend.com/
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+[Proposal to Knative to session affinity](https://github.com/knative/serving/issues/9039)
+
+https://github.com/wietsevenema/todo
+https://github.com/wietsevenema/inspect
+https://github.com/wietsevenema/shutdown
+https://github.com/wietsevenema/product
+https://github.com/wietsevenema/cloud-tasks
+https://github.com/wietsevenema/hello-terraform
+https://github.com/wietsevenema/hello-service
+https://github.com/wietsevenema/logging-tracing-pokemon/
+https://github.com/wietsevenema/cloud-run-knative-serving
+
+[Roles reference](https://cloud.google.com/iam/docs/understanding-roles)
+[Google Cloud Client Libraries](https://cloud.google.com/apis/docs/cloud-client-libraries)
+[MemoryStore pricing](https://cloud.google.com/memorystore/docs/redis/pricing)

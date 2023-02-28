@@ -1,0 +1,9 @@
+apiVersion: operator.knative.dev/v1alpha1
+kind: KnativeServing
+metadata:
+  namespace: knative-serving
+  name: knative-serving
+spec:
+  config:
+    network: 
+      ingress.class: "kourier.ingress.networking.knative.dev"

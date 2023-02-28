@@ -1,0 +1,13 @@
+version: '3' 
+services:
+  frontend:
+    build: frontend 
+    environment:
+      - PRODUCT_API=http://product-api:8080
+      - PORT=8080
+    ports:
+      - "8080:8080"
+  product-api:
+    build: product-api
+    environment:
+      - PORT=8080
